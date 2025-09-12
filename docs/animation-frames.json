@@ -1,0 +1,112 @@
+{
+  "frames": [
+    {
+      "name": "Inicio",
+      "description": "Inicio",
+      "connections": [
+        "USER ~~~ API",
+        "USER ~~~ S3",
+        "API ~~~ LUP",
+        "LDN ~~~ API",
+        "S3 ~~~ L",
+        "L ~~~ IT",
+        "L ~~~ IP",
+        "S3 ~~~ LDN"
+      ]
+    },
+    {
+      "name": "Pedir link",
+      "description": "Pedir link para subir archivo",
+      "connections": [
+        "USER <---> |POST| API",
+        "USER ~~~ S3",
+        "API <--> LUP",
+        "LDN ~~~ API",
+        "S3 ~~~ L",
+        "L ~~~ IT",
+        "L ~~~ IP",
+        "S3 ~~~ LDN"
+      ]
+    },
+    {
+      "name": "Subir archivo",
+      "description": "sube el archivo a S3",
+      "connections": [
+        "USER ~~~ API",
+        "USER --> |PUT| S3",
+        "API ~~~ LUP",
+        "LDN ~~~ API",
+        "S3 ~~~ L",
+        "L ~~~ IT",
+        "L ~~~ IP",
+        "S3 ~~~ LDN"
+      ]
+    },
+    {
+      "name": "Procesar archivo  parte 1",
+      "description": "Lambda procesa transcripción",
+      "connections": [
+        "USER ~~~ API",
+        "USER ~~~ S3",
+        "API ~~~ LUP",
+        "LDN ~~~ API",
+        "S3 <--> L",
+        "L <--> IT",
+        "L ~~~ IP",
+        "S3 ~~~ LDN"
+      ]
+    },
+    {
+      "name": "Procesar archivo parte 2",
+      "description": "Lambda procesa LLM",
+      "connections": [
+        "USER ~~~ API",
+        "USER ~~~ S3",
+        "API ~~~ LUP",
+        "LDN ~~~ API",
+        "S3 <--> L",
+        "L ~~~ IT",
+        "L <--> IP",
+        "S3 ~~~ LDN"
+      ]
+    },
+    {
+      "name": "Pedir estado",
+      "description": "Pedir estado del procesamiento",
+      "connections": [
+        "USER <--> |GET| API",
+        "USER ~~~ S3",
+        "API ~~~ LUP",
+        "LDN <--> API",
+        "S3 ~~~ L",
+        "L ~~~ IT",
+        "L ~~~ IP",
+        "S3 <--> LDN"
+      ]
+    },
+    {
+      "name": "Descargar resultado",
+      "description": "Descargar resultado del procesamiento",
+      "connections": [
+        "USER ~~~ API",
+        "USER <--> |GET| S3",
+        "API ~~~ LUP",
+        "LDN ~~~ API",
+        "S3 ~~~ L",
+        "L ~~~ IT",
+        "L ~~~ IP",
+        "S3 ~~~ LDN"
+      ]
+    }
+  ],
+  "components": {
+    "USER": "<img src='images/user.svg' width='40' height='40'/><br/>User",
+    "API": "<img src='images/api-g.svg' width='40' height='40'/><br/>API",
+    "LUP": "<img src='images/lambda.svg' width='40' height='40'/><br/>Upload",
+    "LDN": "<img src='images/lambda.svg' width='40' height='40'/><br/>Status",
+    "S3": "<img src='images/s3.svg' width='40' height='40'/><br/>S3",
+    "L": "<img src='images/lambda1.svg' width='40' height='40'/><br/>Process",
+    "IT": "<img src='images/internet-ext.svg' width='40' height='40'/><br/>AssemblyAI",
+    "IP": "<img src='images/internet-ext.svg' width='40' height='40'/><br/>Claude"
+  }
+}
