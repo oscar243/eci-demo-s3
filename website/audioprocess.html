@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Análisis AI - Cloud Edition</title>
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="favicon/android-chrome-512x512.png">
+    
+    <link rel="stylesheet" href="css/main.css">
+    
+    <!-- AWS SDK para JavaScript -->
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1462.0.min.js"></script>
+    
+    <!-- Axios para llamadas HTTP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <main class="main-layout">
+            <!-- COLUMNA IZQUIERDA: Upload y Estado -->
+            <div class="left-column">
+                <section class="upload-section">
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-content">
+                            <h3>Subir Archivo de Audio</h3>
+                            <p>Arrastra un archivo aquí o selecciona desde tu dispositivo</p>
+                            <p class="file-types">Formatos soportados: MP3, WAV, MP4, M4A, FLAC, AAC</p>
+                            <input type="file" id="audioFile" accept=".wav,.mp3,.mp4,.m4a,.flac,.aac,.ogg,.wma" style="display: none;">
+                            <button type="button" class="btn btn-primary" id="selectFileBtn">
+                                Seleccionar Archivo
+                            </button>
+                        </div>
+                        
+                        <!-- Placeholder invisible para reservar espacio -->
+                        <div class="file-status-placeholder" id="fileStatusPlaceholder">
+                            <div class="selected-file-info">
+                                <div class="file-icon">🔊</div>
+                                <div class="file-details">
+                                    <div class="file-name">Nombre del archivo placeholder</div>
+                                    <div class="file-meta">Tamaño • Tipo • Duración</div>
+                                </div>
+                                <button type="button" class="btn-change-file">🔄</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Configuración AWS -->
+                    <div class="aws-config" id="awsConfig" style="display: none;">
+                        <h4>Configuración AWS (Opcional)</h4>
+                        <input type="text" id="bucketName" placeholder="Nombre del bucket S3" value="bdat-demo-118162274117">
+                        <input type="text" id="awsRegion" placeholder="Región AWS" value="us-east-1">
+                    </div>
+                    
+                    <button type="button" id="uploadBtn" class="btn btn-success" disabled>
+                        Subir a S3 y Procesar
+                    </button>
+                    
+                    <!-- Etapas del procesamiento -->
+                    <div id="processingStages" class="processing-stages" style="display: none;">
+                        <div class="processing-header">
+                            <h4>Estado del Procesamiento</h4>
+                        </div>
+                        <div class="stages-list" id="stagesList">
+                            <!-- Las etapas se agregan dinámicamente -->
+                        </div>
+                    </div>
+                    
+                    <!-- Progreso y Estado dentro del recuadro de upload -->
+                    <div id="progress" class="progress-section" style="display: none;">
+                        <div class="progress-container">
+                            <div class="progress-bar" id="progressBar"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="progressText">0%</span>
+                            <span id="progressMessage">Iniciando...</span>
+                        </div>
+                    </div>
+                    
+                    <div id="status" class="status-container"></div>
+                </section>
+            </div>
+
+            <!-- COLUMNA DERECHA: Transcripción y Evaluación -->
+            <div class="right-column">
+                <!-- SECCIÓN SUPERIOR: Transcripción -->
+                <section class="transcription-section" id="transcriptionSection">
+                    <div class="section-header">
+                        <h3>📝 Transcripción del Audio</h3>
+                        <button id="downloadTxtBtn" class="btn-download" title="Descargar como TXT" style="display: none;">
+                            📄 Descargar TXT
+                        </button>
+                    </div>
+                    <div id="transcriptionContent" class="transcription-content">
+                        <div class="placeholder-container">
+                            <div class="placeholder-icon">🎤</div>
+                            <p class="placeholder-text">La transcripción con etiquetas de hablante aparecerá aquí una vez procesado el audio</p>
+                            <div class="placeholder-features">
+                                <span class="feature-item">👥 Identificación de speakers</span>
+                                <span class="feature-item">⏱️ Timestamps</span>
+                                <span class="feature-item">📄 Texto estructurado</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECCIÓN INFERIOR: Evaluación JSON -->
+                <section class="evaluation-section" id="evaluationSection">
+                    <div class="section-header">
+                        <h3>🤖 Análisis de la Llamada (JSON)</h3>
+                        <button id="downloadJsonBtn" class="btn-download" title="Descargar como JSON" style="display: none;">
+                            📊 Descargar JSON
+                        </button>
+                    </div>
+                    <div id="evaluationContent" class="evaluation-content">
+                        <div class="placeholder-container">
+                            <div class="placeholder-icon">📊</div>
+                            <p class="placeholder-text">El análisis detallado en formato JSON aparecerá aquí una vez procesado el audio</p>
+                            <div class="placeholder-features">
+                                <span class="feature-item">📋 Resumen breve</span>
+                                <span class="feature-item">🔍 Puntos destacados</span>
+                                <span class="feature-item">🏷️ Temas principales</span>
+                                <span class="feature-item">📈 Análisis de tono</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/upload-handler.js"></script>
+    <script src="js/upload-ui.js"></script>
+    <script src="js/status-handler.js"></script>
+    <script src="js/status-ui.js"></script>
+    <script src="js/processing-stages.js"></script>
+    <script src="js/status-integrator.js"></script>
+</body>
+</html>

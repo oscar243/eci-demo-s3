@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visor Interactivo de Arquitectura AWS S3</title>
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="favicon/android-chrome-512x512.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa; 
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .flow-node {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .flow-node:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .flow-arrow {
+            font-size: 2.5rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <!-- Chosen Palette: Warm Neutrals & Subtle Accents -->
+    <!-- Application Structure Plan: The SPA uses a thematic, single-page scroll structure with a sticky top navigation for easy access to three main sections: Data Lake, Serverless Architecture, and Global Distribution, directly corresponding to the source document's flowcharts. This was chosen for its intuitive mapping to the source material. Interactivity is introduced via clickable nodes in each flowchart, which open a modal with more detailed explanations, allowing for a layered-learning experience that avoids initial information overload. A final summary section provides a comparative visualization to synthesize the roles of the different services. -->
+    <!-- Visualization & Content Choices: 1. Process Flows (Data Lake, Serverless, Distribution): Goal=Organize. Method=Diagram built with styled HTML/CSS divs and flexbox. Interaction=Clicking a step opens a modal with details. Justification=Directly visualizes the process without relying on prohibited SVG/Mermaid, while interactivity allows for detail on demand. 2. Service Comparison: Goal=Compare. Method=Radar Chart (Chart.js/Canvas). Interaction=Standard tooltips on hover. Justification=Provides a high-level comparative summary of the services' roles in a visually engaging format. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-900">Arquitectura AWS S3</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#data-lake" class="text-gray-600 hover:text-blue-600 transition">Data Lake</a>
+                <a href="#serverless" class="text-gray-600 hover:text-blue-600 transition">Sin Servidor</a>
+                <a href="#transcription" class="text-gray-600 hover:text-blue-600 transition">Transcripción</a>
+                <a href="#distribution" class="text-gray-600 hover:text-blue-600 transition">Distribución Global</a>
+                <a href="#audio-demo" class="text-purple-600 hover:text-purple-800 transition font-semibold">🎧 Demo Audio</a>
+                <a href="#summary" class="text-gray-600 hover:text-blue-600 transition">Resumen</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <section id="data-lake" class="mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900">1. Flujo de Datos del Data Lake</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">Esta sección ilustra cómo Amazon S3 actúa como el núcleo de un data lake moderno. Los datos de diversas fuentes se centralizan en S3 y luego se catalogan y analizan utilizando servicios especializados de AWS, permitiendo consultas complejas sin necesidad de mover los datos. Haz clic en cada paso para ver más detalles.</p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 flex-wrap">
+                <div class="flow-node bg-white p-6 rounded-xl border border-gray-200 shadow-sm text-center w-60" onclick="showModal('Ingesta de Datos', 'Simula la generación de nuevos datos desde una fuente externa, como un sistema ERP o una aplicación. Este es el punto de partida de cualquier pipeline de datos.')">
+                    <h3 class="font-semibold mb-2">Ingesta de Datos</h3>
+                    <p class="text-sm text-gray-500">La fuente genera nuevos datos.</p>
+                </div>
+                <div class="flow-arrow transform rotate-90 md:rotate-0">→</div>
+                <div class="flow-node bg-white p-6 rounded-xl border border-gray-200 shadow-sm text-center w-60" onclick="showModal('Carga en S3 Data Lake', 'Los datos generados se cargan en un bucket central de Amazon S3, que funciona como el repositorio principal o Data Lake. S3 ofrece durabilidad y escalabilidad masiva.')">
+                    <h3 class="font-semibold mb-2">Carga en S3</h3>
+                    <p class="text-sm text-gray-500">Los datos se ingieren en el bucket.</p>
+                </div>
+                <div class="flow-arrow transform rotate-90 md:rotate-0">→</div>
+                <div class="flow-node bg-white p-6 rounded-xl border border-gray-200 shadow-sm text-center w-60" onclick="showModal('Rastreador AWS Glue', 'AWS Glue escanea automáticamente los datos en S3 para inferir su esquema (columnas, tipos de datos) y actualiza el Catálogo de Datos de AWS Glue. Esto hace que los datos sean detectables y consultables.')">
+                    <h3 class="font-semibold mb-2">Ejecutar AWS Glue</h3>
+                    <p class="text-sm text-gray-500">Escanea S3 para inferir esquemas.</p>
+                </div>
+                 <div class="flow-arrow transform rotate-90 md:rotate-0">→</div>
+                <div class="flow-node bg-white p-6 rounded-xl border border-gray-200 shadow-sm text-center w-60" onclick="showModal('Consulta con Athena', 'Amazon Athena es un servicio de consulta sin servidor que utiliza SQL estándar para analizar datos directamente en S3. Lee los metadatos del Catálogo de AWS Glue para ejecutar las consultas de manera eficiente.')">
+                    <h3 class="font-semibold mb-2">Consulta con Athena</h3>
+                    <p class="text-sm text-gray-500">Ejecuta una consulta SQL.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="serverless" class="mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900">2. Flujo de Arquitectura Sin Servidor</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">Aquí se muestra cómo S3 puede desencadenar procesos automáticos. Al subir un objeto a un bucket, se puede invocar una función de AWS Lambda para realizar tareas como redimensionar imágenes, analizar archivos o cualquier otra lógica de negocio, sin necesidad de gestionar servidores.</p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 flex-wrap">
+                <div class="flow-node bg-white p-6 rounded-xl border border-gray-200 shadow-sm text-center w-60" onclick="showModal('Subir Objeto a S3', 'El proceso comienza cuando un usuario o una aplicación carga un archivo (por ejemplo, una imagen) a un bucket de S3 configurado específicamente para activar eventos.')">
+                    <h3 class="font-semibold mb-2">Subir Objeto a S3</h3>
+                    <p class="text-sm text-gray-500">La carga del objeto actúa como disparador.</p>
+                </div>
+                <div class="flow-arrow transform rotate-90 md:rotate-0">→</div>
+                <div class="flow-node bg-white p-6 rounded-xl border border-gray-200 shadow-sm text-center w-60" onclick="showModal('Ejecutar AWS Lambda', 'El evento de carga en S3 invoca automáticamente una función de AWS Lambda. El código de la función se ejecuta para procesar el objeto, por ejemplo, creando una miniatura de una imagen.')">
+                    <h3 class="font-semibold mb-2">Ejecutar AWS Lambda</h3>
+                    <p class="text-sm text-gray-500">La función se activa y procesa el objeto.</p>
+                </div>
+                <div class="flow-arrow transform rotate-90 md:rotate-0">→</div>
+                <div class="flow-node bg-white p-6 rounded-xl border border-gray-200 shadow-sm text-center w-60" onclick="showModal('Guardar Resultado en S3', 'Una vez que Lambda finaliza el procesamiento, el resultado (por ejemplo, la imagen en miniatura) se guarda en otro bucket de S3 o en una ubicación diferente del mismo bucket.')">
+                    <h3 class="font-semibold mb-2">Guardar Objeto Procesado</h3>
+                    <p class="text-sm text-gray-500">El resultado se almacena en S3.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="transcription" class="mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900">3. Flujo de Transcripción de Audio</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">Este flujo demuestra una poderosa integración sin servidor para procesar archivos de audio. Al subir un archivo de audio a un bucket de S3, se activa automáticamente una función de AWS Lambda que invoca a Amazon Transcribe para transcribir el audio y guardar el resultado en otro bucket de S3. Haz clic en cada paso para ver más detalles.</p>
+            <div class="flex flex-col items-center justify-center gap-4 flex-wrap">
+                <div class="flex flex-row items-center justify-center gap-4 md:gap-8 flex-wrap">
+                    <div class="flow-node bg-white p-6 rounded-xl border border-gray-200 shadow-sm text-center w-60" onclick="showModal('Subir Audio a S3', 'El proceso se inicia cuando un archivo de audio se carga en un bucket de S3 dedicado. Este evento de carga es el disparador para todo el flujo de trabajo posterior.')">
+                        <h3 class="font-semibold mb-2">S3 (Audio)</h3>
+                        <p class="text-sm text-gray-500">El archivo de audio se almacena aquí.</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-node bg-white p-6 rounded-xl border border-gray-200 shadow-sm text-center w-60" onclick="showModal('Función de AWS Lambda', 'La carga del archivo de audio activa una función de Lambda. La función prepara un trabajo de transcripción y luego llama al servicio de Amazon Transcribe.')">
+                        <h3 class="font-semibold mb-2">Lambda</h3>
+                        <p class="text-sm text-gray-500">Automatiza el proceso.</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-node bg-white p-6 rounded-xl border border-gray-200 shadow-sm text-center w-60" onclick="showModal('Amazon Transcribe', 'Amazon Transcribe procesa el archivo de audio, convirtiéndolo en texto. El servicio puede manejar varios idiomas y formatos de audio.')">
+                        <h3 class="font-semibold mb-2">Amazon Transcribe</h3>
+                        <p class="text-sm text-gray-500">Convierte audio a texto.</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-node bg-white p-6 rounded-xl border border-gray-200 shadow-sm text-center w-60" onclick="showModal('S3 (Resultados)', 'El resultado de la transcripción, un archivo de texto en formato JSON, se almacena de nuevo en un bucket de S3, haciendo que los datos sean fácilmente accesibles y analizables.')">
+                        <h3 class="font-semibold mb-2">S3 (Resultados)</h3>
+                        <p class="text-sm text-gray-500">El texto transcrito se guarda aquí.</p>
+                    </div>
+                </div>
+                <div class="mt-8 bg-white p-6 rounded-xl border border-gray-200 shadow-sm w-full md:max-w-2xl">
+                    <h3 class="font-bold text-lg text-center mb-4">Pasos Internos de la Función Lambda</h3>
+                    <div class="flex flex-col items-center justify-center gap-2">
+                         <div class="w-full text-center text-gray-700 p-2 border-b">Recibe el evento de S3</div>
+                         <div class="w-full text-center text-gray-700 p-2 border-b">Prepara el trabajo de transcripción</div>
+                         <div class="w-full text-center text-gray-700 p-2 border-b">Llama a Amazon Transcribe</div>
+                         <div class="w-full text-center text-gray-700 p-2">Guarda el resultado en S3</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="distribution" class="mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900">4. Flujo de Distribución Global</h2>
+             <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">Para entregar contenido estático como imágenes, videos y sitios web a usuarios de todo el mundo con la menor latencia posible, S3 se integra con Amazon CloudFront, una Red de Entrega de Contenido (CDN) que almacena en caché el contenido en ubicaciones cercanas a los usuarios.</p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 flex-wrap">
+                <div class="flow-node bg-white p-6 rounded-xl border border-gray-200 shadow-sm text-center w-60" onclick="showModal('S3 como Origen', 'Un bucket de S3 se configura como el origen para una distribución de CloudFront. Aquí es donde reside la versión original y definitiva del contenido.')">
+                    <h3 class="font-semibold mb-2">S3 como Origen</h3>
+                    <p class="text-sm text-gray-500">El contenido reside en un bucket.</p>
+                </div>
+                <div class="flow-arrow transform rotate-90 md:rotate-0">→</div>
+                <div class="flow-node bg-white p-6 rounded-xl border border-gray-200 shadow-sm text-center w-60" onclick="showModal('Sincronizar con CloudFront', 'CloudFront extrae el contenido del bucket de S3 y lo distribuye a una red global de servidores perimetrales (edge locations).')">
+                    <h3 class="font-semibold mb-2">Sincronizar con CloudFront</h3>
+                    <p class="text-sm text-gray-500">CloudFront utiliza S3 como origen.</p>
+                </div>
+                <div class="flow-arrow transform rotate-90 md:rotate-0">→</div>
+                <div class="flow-node bg-white p-6 rounded-xl border border-gray-200 shadow-sm text-center w-60" onclick="showModal('Acceso de Usuario Final', 'Cuando un usuario solicita el contenido, se le redirige a la ubicación perimetral de CloudFront más cercana, lo que reduce drásticamente el tiempo de carga.')">
+                    <h3 class="font-semibold mb-2">Acceso de Usuario Final</h3>
+                    <p class="text-sm text-gray-500">Entrega de contenido con baja latencia.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="audio-demo" class="mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900">5. Demo Práctico: Procesamiento de Audio</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">Subir grabación de voz para obtener transcripción y análisis del contenido.</p>
+            
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4 relative">
+                <div class="absolute top-4 right-4 z-10">
+                    <a href="audioprocess.html" target="_blank" class="inline-flex items-center justify-center w-8 h-8 bg-white hover:bg-gray-50 text-gray-600 hover:text-gray-800 rounded-lg shadow-sm border border-gray-200 transition-colors" title="Abrir demo completo en nueva ventana">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+                        </svg>
+                    </a>
+                </div>
+                
+                <div id="demoIframe" class="">
+                    <iframe 
+                        src="audioprocess.html" 
+                        width="100%" 
+                        height="800" 
+                        frameborder="0"
+                        class="rounded-lg border border-gray-300"
+                        title="Demo de Procesamiento de Audio">
+                    </iframe>
+                </div>
+            </div>
+        </section>
+        
+        <section id="summary" class="bg-white rounded-xl border border-gray-200 shadow-sm p-8">
+             <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900">Resumen Comparativo de Servicios</h2>
+             <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">Este gráfico compara los servicios clave de esta arquitectura a través de diferentes dimensiones conceptuales, ayudando a visualizar el rol principal de cada uno, desde el almacenamiento masivo hasta el cómputo bajo demanda y la entrega de contenido.</p>
+             <div class="chart-container">
+                <canvas id="servicesRadarChart"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center py-8 mt-12 border-t">
+        <p class="text-gray-500">Aplicación interactiva dServidoriseñada para visualizar la arquitectura de datos de Amazon S3.</p>
+    </footer>
+    
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg shadow-2xl p-8 w-full max-w-lg relative">
+            <button onclick="hideModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+            <h3 id="modal-title" class="text-2xl font-bold mb-4"></h3>
+            <p id="modal-content" class="text-gray-600"></p>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalContent = document.getElementById('modal-content');
+
+        function showModal(title, content) {
+            modalTitle.textContent = title;
+            modalContent.textContent = content;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function hideModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                hideModal();
+            }
+        }
+
+        const ctx = document.getElementById('servicesRadarChart').getContext('2d');
+        const servicesRadarChart = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['Almacenamiento', 'Cómputo', 'Análisis de Datos', 'Automatización', 'Entrega de Contenido'],
+                datasets: [
+                    {
+                        label: 'Amazon S3',
+                        data: [10, 1, 3, 7, 8],
+                        fill: true,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        pointBackgroundColor: 'rgb(255, 99, 132)',
+                    }, 
+                    {
+                        label: 'AWS Lambda',
+                        data: [1, 10, 2, 10, 1],
+                        fill: true,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgb(54, 162, 235)',
+                        pointBackgroundColor: 'rgb(54, 162, 235)',
+                    },
+                    {
+                        label: 'Amazon Athena',
+                        data: [2, 4, 10, 3, 1],
+                        fill: true,
+                        backgroundColor: 'rgba(255, 205, 86, 0.2)',
+                        borderColor: 'rgb(255, 205, 86)',
+                        pointBackgroundColor: 'rgb(255, 205, 86)',
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                elements: {
+                    line: {
+                        borderWidth: 3
+                    }
+                },
+                scales: {
+                    r: {
+                        angleLines: {
+                            display: false
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 10,
+                        pointLabels: {
+                            font: {
+                                size: 14
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
