@@ -1,21 +1,9 @@
 <!DOCTYPE html>
-
 <html class="scroll-smooth" lang="es">
-
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Visor Interactivo de Arquitectura AWS S3</title>
-
-    <!-- Favicons -->
-    <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="favicon/android-chrome-192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="favicon/android-chrome-512x512.png">
-
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
@@ -57,10 +45,19 @@
             font-size: 2.5rem;
             color: #6c757d;
         }
+
+        .table-striped tbody tr:nth-child(odd) {
+            background-color: #f3f4f6;
+        }
     </style>
 </head>
 
 <body class="text-gray-800">
+    <!-- Chosen Palette: Warm Neutrals & Subtle Accents -->
+    <!-- Application Structure Plan: The SPA uses a thematic, single-page scroll structure with a sticky top navigation for easy access to three main sections: Data Lake, Serverless Architecture, and Global Distribution, directly corresponding to the source document's flowcharts. This was chosen for its intuitive mapping to the source material. Interactivity is introduced via clickable nodes in each flowchart, which open a modal with more detailed explanations, allowing for a layered-learning experience that avoids initial information overload. A final summary section provides a comparative visualization to synthesize the roles of the different services. -->
+    <!-- Visualization & Content Choices: 1. Process Flows (Data Lake, Serverless, Distribution): Goal=Organize. Method=Diagram built with styled HTML/CSS divs and flexbox. Interaction=Clicking a step opens a modal with details. Justification=Directly visualizes the process without relying on prohibited SVG/Mermaid, while interactivity allows for detail on demand. 2. Service Comparison: Goal=Compare. Method=Radar Chart (Chart.js/Canvas). Interaction=Standard tooltips on hover. Justification=Provides a high-level comparative summary of the services' roles in a visually engaging format. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
     <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
             <h1 class="text-xl font-bold text-gray-900">Arquitectura AWS S3</h1>
@@ -70,10 +67,7 @@
                 <a class="text-gray-600 hover:text-blue-600 transition" href="#transcription">Transcripción</a>
                 <a class="text-gray-600 hover:text-blue-600 transition" href="#distribution">Distribución Global</a>
                 <a class="text-gray-600 hover:text-blue-600 transition" href="#summary">Resumen</a>
-                <a class="text-gray-600 hover:text-blue-600 transition" href="#storage-classes">Almacenamiento</a>
-                <a class="text-gray-600 hover:text-blue-600 transition" href="#pricing-models">Precios</a>
-                <a href="#audio-demo" class="text-purple-600 hover:text-purple-800 transition font-semibold">🎧 Demo
-                    Audio</a>
+                <a class="text-gray-600 hover:text-blue-600 transition" href="#pricing">Precios</a>
             </div>
         </nav>
     </header>
@@ -221,10 +215,59 @@
                 <canvas id="servicesRadarChart"></canvas>
             </div>
         </section>
+        
+        <section class="mb-20" id="pricing">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900">5. Modelos de Precios (Pago por Uso)</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">S3 utiliza un modelo de precios de pago por
+                uso, cobrando solo por los recursos que realmente utilizas, sin costos iniciales ni compromisos a largo
+                plazo.</p>
 
-        <!-- Sección Clases de Almacenamiento -->
-        <section class="mb-20" id="storage-classes">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900">Clases de Almacenamiento</h2>
+            <h3 class="text-2xl font-bold text-center mt-8 mb-4 text-gray-900">5.1 Desglose de Costos de S3</h3>
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-8 mt-4">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full table-auto text-sm">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th colspan="2" class="px-6 py-4 text-left font-semibold text-gray-900">
+                                    Resumen de Costos de Amazon S3
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">Almacenamiento</td>
+                                <td class="px-6 py-4 text-gray-900">Se cobra por GB-mes, varía según clase y región.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">Solicitudes y Recuperación de Datos</td>
+                                <td class="px-6 py-4 text-gray-900">Costos por PUT, GET, COPY, LIST y recuperación.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">Transferencia de Datos</td>
+                                <td class="px-6 py-4 text-gray-900">Se cobra al mover datos fuera de S3.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">Gestión y Análisis</td>
+                                <td class="px-6 py-4 text-gray-900">Inventory, Class Analysis, Tagging, Metadata.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">Replicación</td>
+                                <td class="px-6 py-4 text-gray-900">Costos asociados a la copia entre buckets.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">Transformar y Consultar</td>
+                                <td class="px-6 py-4 text-gray-900">S3 Object Lambda, S3 Select.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">AWS Free Tier</td>
+                                <td class="px-6 py-4 text-gray-900">5 GB Standard, solicitudes gratis, 100 GB transferencia/mes.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <h3 class="text-2xl font-bold text-center mt-8 mb-4 text-gray-900">5.2 Clases de Almacenamiento</h3>
             <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">Amazon S3 ofrece diferentes clases de
                 almacenamiento optimizadas para distintos patrones de acceso y necesidades de costo, desde datos de
                 acceso frecuente hasta archivado a largo plazo.</p>
@@ -233,98 +276,252 @@
                     <table class="min-w-full">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Acceso Frecuente
-                                    (Hot Data)</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Acceso Infrecuente
-                                    (Warm Data)</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Patrones de Acceso
-                                    Desconocido</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Archivado (Cold)
-                                </th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Clase de Almacenamiento</th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Propósito y Uso</th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Costo y Tarifas</th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Duración Mínima</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
                             <tr>
-                                <td class="px-6 py-4 text-sm text-gray-900">S3 Standard</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">S3 Standard IA (infrequent Access, rápido
-                                    cuando se necesita)</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">S3 Intelligent-Tiering (Optimización
-                                    automática, sin tarifas de recuperación)</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">S3 Glacier Instant Retrieval (Recuperación
-                                    en milisegundos)</td>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">S3 Standard</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">Acceso frecuente. Ideal para sitios web, aplicaciones y análisis de datos.</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">Alto por GB. Tarifa de solicitudes.</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">No aplica</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-4 text-sm text-gray-900">S3 Express One Zone (alto rendimiento,
-                                    latencia &lt;10ms, una AZ)</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">S3 One Zone-IA (menor costo, pero con datos
-                                    críticos)</td>
-                                <td class="px-6 py-4 text-sm text-gray-500">—</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">S3 Glacier Flexible Retrieval (Recuperación
-                                    en minutos a horas)</td>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">S3 Intelligent-Tiering</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">Acceso desconocido o cambiante. Optimización automática.</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">Tarifa de monitoreo por objeto. Varía entre costos de acceso frecuente e infrecuente.</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">No aplica</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-4 text-sm text-gray-500">—</td>
-                                <td class="px-6 py-4 text-sm text-gray-500">—</td>
-                                <td class="px-6 py-4 text-sm text-gray-500">—</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">S3 Glacier Deep Archive (menor costo,
-                                    recuperación en horas, mínimo 180 días)</td>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">S3 Standard-IA</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">Acceso infrecuente. Para copias de seguridad a largo plazo que requieren recuperación rápida.</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">Bajo por GB. Tarifa de recuperación.</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">30 días</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">S3 One Zone-IA</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">Acceso infrecuente, no crítico. Datos que pueden recrearse fácilmente.</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">20% más barato que Standard-IA. Tarifa de recuperación.</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">30 días</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">S3 Glacier Instant Retrieval</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">Archivo con recuperación instantánea. Datos que se acceden una vez al año.</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">Muy bajo por GB. Tarifa de recuperación más alta.</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">90 días</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">S3 Glacier Flexible Retrieval</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">Archivo con recuperación flexible. Para copias de seguridad y recuperación de desastres.</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">Muy bajo por GB. La recuperación puede tardar de minutos a horas.</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">90 días</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">S3 Glacier Deep Archive</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">Archivo a muy largo plazo. Para retención por 7-10+ años.</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">El más bajo por GB. Recuperación en 12 horas.</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">180 días</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">S3 Express One Zone</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">Alto rendimiento y baja latencia. Para aplicaciones sensibles a la latencia.</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">Costo por almacenamiento y cómputo.</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">No aplica</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-        </section>
 
-        <!-- Sección Modelos de Precios -->
-        <section class="mb-20" id="pricing-models">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900">Modelos de Precios (Pago por Uso)
-            </h2>
-            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">S3 utiliza un modelo de precios de pago por
-                uso, cobrando solo por los recursos que realmente utilizas, sin costos iniciales ni compromisos a largo
-                plazo.</p>
-            <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-8">
-                <div class="overflow-x-auto">
-                    <table class="min-w-full">
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-8 mt-8">
+                <h3 class="text-2xl font-bold text-center mb-4 text-gray-900">5.3 Solicitudes y Recuperación de Datos</h3>
+                <div class="overflow-x-auto mt-4">
+                    <table class="min-w-full table-auto text-sm table-striped">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Concepto</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Descripción</th>
+                                <th class="px-6 py-4 text-left font-semibold text-gray-900">Tipo de Solicitud</th>
+                                <th class="px-6 py-4 text-left font-semibold text-gray-900">Descripción</th>
+                                <th class="px-6 py-4 text-left font-semibold text-gray-900">Costo Asociado</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
                             <tr>
-                                <td class="px-6 py-4 text-sm font-medium text-gray-900">Almacenamiento</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">Se cobra por GB-mes, varía según clase y
-                                    región</td>
+                                <td class="px-6 py-4 font-medium text-gray-900">Solicitudes de Escritura</td>
+                                <td class="px-6 py-4 text-gray-900">PUT, COPY, POST, LIST.</td>
+                                <td class="px-6 py-4 text-gray-900">Generalmente más costosas.</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-4 text-sm font-medium text-gray-900">Solicitudes y Recuperación de
-                                    Datos</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">Costos por PUT, GET, COPY, LIST y
-                                    recuperación</td>
+                                <td class="px-6 py-4 font-medium text-gray-900">Solicitudes de Lectura</td>
+                                <td class="px-6 py-4 text-gray-900">GET, SELECT.</td>
+                                <td class="px-6 py-4 text-gray-900">Más económicas que las de escritura.</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-4 text-sm font-medium text-gray-900">Transferencia de Datos</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">Se cobra al mover datos fuera de S3</td>
+                                <td class="px-6 py-4 font-medium text-gray-900">Solicitudes de Eliminación</td>
+                                <td class="px-6 py-4 text-gray-900">DELETE, CANCEL.</td>
+                                <td class="px-6 py-4 text-gray-900">Gratuitas.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-8 mt-8">
+                <h3 class="text-2xl font-bold text-center mb-4 text-gray-900">5.4 Transferencia de Datos</h3>
+                <div class="overflow-x-auto mt-4">
+                    <table class="min-w-full table-auto text-sm table-striped">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-4 text-left font-semibold text-gray-900">Tipo de Transferencia</th>
+                                <th class="px-6 py-4 text-left font-semibold text-gray-900">Descripción</th>
+                                <th class="px-6 py-4 text-left font-semibold text-gray-900">Costo Asociado</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">Entrada a S3</td>
+                                <td class="px-6 py-4 text-gray-900">Mover datos desde Internet hacia un bucket de S3.</td>
+                                <td class="px-6 py-4 text-gray-900">Gratuita.</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-4 text-sm font-medium text-gray-900">Gestión y Análisis</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">Inventory, Class Analysis, Tagging, Metadata
-                                </td>
+                                <td class="px-6 py-4 font-medium text-gray-900">Entre buckets en misma región</td>
+                                <td class="px-6 py-4 text-gray-900">Mover datos entre dos buckets dentro de la misma región de AWS.</td>
+                                <td class="px-6 py-4 text-gray-900">Gratuita.</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-4 text-sm font-medium text-gray-900">Replicación</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">Costos asociados a la copia entre buckets
-                                </td>
+                                <td class="px-6 py-4 font-medium text-gray-900">A otros servicios AWS en misma región</td>
+                                <td class="px-6 py-4 text-gray-900">Mover datos de S3 a otro servicio de AWS (ej. EC2, Lambda) en la misma región.</td>
+                                <td class="px-6 py-4 text-gray-900">Gratuita.</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-4 text-sm font-medium text-gray-900">Transformar y Consultar</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">S3 Object Lambda, S3 Select</td>
+                                <td class="px-6 py-4 font-medium text-gray-900">A CloudFront</td>
+                                <td class="px-6 py-4 text-gray-900">Mover datos de S3 a la red CDN de CloudFront.</td>
+                                <td class="px-6 py-4 text-gray-900">Gratuita.</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-4 text-sm font-medium text-gray-900">AWS Free Tier</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">5 GB Standard, solicitudes gratis, 100 GB
-                                    transferencia/mes</td>
+                                <td class="px-6 py-4 font-medium text-gray-900">Saliente a Internet</td>
+                                <td class="px-6 py-4 text-gray-900">Mover datos de S3 a un usuario o servicio fuera de la red de AWS.</td>
+                                <td class="px-6 py-4 text-gray-900">Costo por GB que disminuye a mayor volumen.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">Entre diferentes regiones</td>
+                                <td class="px-6 py-4 text-gray-900">Mover datos de un bucket en una región a otro bucket en una región diferente.</td>
+                                <td class="px-6 py-4 text-gray-900">Costo por GB.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">Transferencia Acelerada</td>
+                                <td class="px-6 py-4 text-gray-900">Usar servicios como S3 Transfer Acceleration o Puntos de Acceso de Múltiples Regiones para acelerar la transferencia de datos.</td>
+                                <td class="px-6 py-4 text-gray-900">Costo adicional por GB procesado.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-8 mt-8">
+                <h3 class="text-2xl font-bold text-center mb-4 text-gray-900">5.5 Gestión y Perspectivas</h3>
+                <div class="overflow-x-auto mt-4">
+                    <table class="min-w-full table-auto text-sm table-striped">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-4 text-left font-semibold text-gray-900">Función</th>
+                                <th class="px-6 py-4 text-left font-semibold text-gray-900">Costo y Propósito</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">S3 Inventory</td>
+                                <td class="px-6 py-4 text-gray-900">Genera informes sobre tus objetos para gestión. El costo se basa en la cantidad de objetos listados. Es útil para auditar y planificar.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">S3 Storage Class Analysis</td>
+                                <td class="px-6 py-4 text-gray-900">Analiza automáticamente los patrones de acceso a tus datos para ayudarte a determinar la clase de almacenamiento más adecuada. Se te cobra por el análisis de cada objeto.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">S3 Storage Lens</td>
+                                <td class="px-6 py-4 text-gray-900">Ofrece una vista centralizada de todo tu almacenamiento en S3, con métricas y análisis de uso para ayudarte a optimizar costos y proteger datos. Su costo es por la cantidad de datos monitoreados.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">S3 Object Tagging</td>
+                                <td class="px-6 py-4 text-gray-900">Te permite añadir etiquetas a tus objetos para organizarlos, lo que ayuda en la gestión y automatización. No tiene costo.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">S3 Metadata</td>
+                                <td class="px-6 py-4 text-gray-900">Proporciona metadatos consultables en tiempo casi real para organizar y acelerar la búsqueda de datos. Se te cobra por la cantidad de actualizaciones de objetos.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-8 mt-8">
+                <h3 class="text-2xl font-bold text-center mb-4 text-gray-900">5.6 Replicación</h3>
+                <div class="overflow-x-auto mt-4">
+                    <table class="min-w-full table-auto text-sm table-striped">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-4 text-left font-semibold text-gray-900">Tipo de Replicación</th>
+                                <th class="px-6 py-4 text-left font-semibold text-gray-900">Cargos Principales</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">CRR &amp; SRR</td>
+                                <td class="px-6 py-4 text-gray-900">Almacenamiento en destino, solicitudes PUT, cargos de recuperación y de transferencia saliente (CRR).</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">Replicación por Lotes</td>
+                                <td class="px-6 py-4 text-gray-900">Mismos cargos que replicación estándar, más cargos por operaciones por lotes.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-8 mt-8">
+                <h3 class="text-2xl font-bold text-center mb-4 text-gray-900">5.7 Transformación y Consulta</h3>
+                <div class="overflow-x-auto mt-4">
+                    <table class="min-w-full table-auto text-sm table-striped">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-4 text-left font-semibold text-gray-900">Función</th>
+                                <th class="px-6 py-4 text-left font-semibold text-gray-900">Costo Asociado</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">S3 Object Lambda</td>
+                                <td class="px-6 py-4 text-gray-900">Solicitudes GET de S3, cargos de cómputo de Lambda, datos devueltos.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">S3 Select y S3 Glacier Select</td>
+                                <td class="px-6 py-4 text-gray-900">Cantidad de datos escaneados y devueltos.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-8 mt-8">
+                <h3 class="text-2xl font-bold text-center mb-4 text-gray-900">5.8 Tablas S3 y Nivel Gratuito</h3>
+                <div class="overflow-x-auto mt-4">
+                    <table class="min-w-full table-auto text-sm table-striped">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-4 text-left font-semibold text-gray-900">Concepto</th>
+                                <th class="px-6 py-4 text-left font-semibold text-gray-900">Descripción/Costo</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">S3 Tables</td>
+                                <td class="px-6 py-4 text-gray-900">Cargos por almacenamiento, solicitudes, monitoreo de objetos y compactación.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">Nivel Gratuito de AWS</td>
+                                <td class="px-6 py-4 text-gray-900">Incluye 5 GB de S3 Standard, 20,000 GETs, 2,000 PUTs y 100 GB de transferencia saliente por mes.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -452,4 +649,71 @@
     </script>
 </body>
 
+        <footer class="text-center py-8 mt-12 border-t">
+            <h3 class="text-xl font-bold mb-4">Referencias</h3>
+            <div class="text-left max-w-2xl mx-auto text-sm text-gray-600 space-y-2">
+                <p>Amazon. (2025, septiembre 6). Amazon S3 - Cloud Object Storage. AWS. https://aws.amazon.com/s3/</p>
+                <p>Amazon. (2025, septiembre 6). Amazon S3 FAQs - Cloud Object Storage. AWS. https://aws.amazon.com/s3/faqs/</p>
+                <p>Amazon. (2025, septiembre 6). Amazon S3 Features - Cloud Object Storage. AWS. https://aws.amazon.com/s3/features/</p>
+                <p>Amazon. (2025, septiembre 6). Amazon S3 customers. AWS. https://aws.amazon.com/s3/customers/</p>
+                <p>Amazon. (2025, septiembre 6). Amazon S3 Deep Dive: Fundamentals Explained. AWS. https://aws.amazon.com/awstv/watch/65acaf1dec0/</p>
+                <p>Amazon. (2025, septiembre 6). Architecting for high availability on Amazon S3. AWS Storage Blog. https://aws.amazon.com/blogs/storage/architecting-for-high-availability-on-amazon-s3/</p>
+                <p>Amazon. (2025, septiembre 6). Build a data lake on Amazon S3: Recent customer case studies. AWS Storage Blog. https://aws.amazon.com/blogs/storage/recent-customers-building-data-lakes-on-amazon-s3/</p>
+                <p>Amazon. (2025, septiembre 6). consistency. AWS. https://aws.amazon.com/s3/consistency/</p>
+                <p>Amazon. (2025, septiembre 6). Object Storage Classes – Amazon S3. AWS. https://aws.amazon.com/s3/storage-classes/</p>
+                <p>Amazon. (2025, septiembre 6). Our Origins - AWS. Amazon.com. https://aws.amazon.com/about-aws/our-origins/</p>
+                <p>Amazon. (2025, septiembre 6). S3 Pricing - AWS. https://aws.amazon.com/s3/pricing/</p>
+                <p>Amazon. (2025, septiembre 6). The deceptively simple origins of AWS. About Amazon. https://www.aboutamazon.com/news/aws/the-deceptively-simple-origins-of-aws</p>
+                <p>Amazon. (2025, septiembre 6). What Is Object Storage?. AWS. https://aws.amazon.com/what-is/object-storage/</p>
+                <p>Amazon. (2025, septiembre 6). What is AWS Glue?. AWS Documentation. https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html</p>
+                <p>Amazon. (2025, septiembre 6). How do I identify data transfer costs in Amazon S3?. AWS re:Post. https://repost.aws/knowledge-center/s3-data-transfer-costs</p>
+                <p>Amazon. (2025, septiembre 6). Use Amazon S3 with Amazon EC2 instances. Amazon Elastic. https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonS3.html</p>
+                <p>Amazon. (2025, septiembre 6). Preserving 100 Years of History Using Amazon S3 Glacier Instant Retrieval with the BBC | Case Study. https://aws.amazon.com/solutions/case-studies/bbc-s3-case-study/</p>
+                <p>Amazon. (2025, septiembre 6). Amazon S3 Vectors. AWS. https://aws.amazon.com/s3/features/vectors/</p>
+                <p>Analytics Vidhya. (2025, septiembre 6). 10 Common AWS S3 Mistakes. https://www.analyticsvidhya.com/blog/2022/12/10-common-aws-s3-mistakes-and-how-to-fix-them/</p>
+                <p>Apptio. (2025, septiembre 6). The Essential Guide to AWS S3 Pricing. https://www.apptio.com/blog/essential-guide-aws-s3-pricing/</p>
+                <p>Awad, J. W. (2025, septiembre 6). AWS S3 Deep Dive. Medium. https://medium.com/@joudwawad/aws-s3-deep-dive-1c19ad58af40</p>
+                <p>Airbyte. (2025, septiembre 6). S3 Vs. GCS Vs. Azure Blob Storage: Cloud Storage Comparison. https://airbyte.com/data-engineering-resources/s3-gcs-and-azure-blob-storage-compared</p>
+                <p>Cloudian. (2025, septiembre 6). S3 Storage: How It Works, Use Cases and Tutorial. https://cloudian.com/blog/s3-storage-behind-the-scenes/</p>
+                <p>Cloudian. (2025, septiembre 6). Guide to AWS S3 Storage Pricing. https://cloudian.com/blog/5-components-of-aws-s3-storage-pricing/</p>
+                <p>CloudForecast. (2025, septiembre 6). The Ultimate Guide to AWS Data Transfer Pricing. https://www.cloudforecast.io/guides/aws-data-transfer-cost/</p>
+                <p>Cloudflare. (2025, septiembre 6). What is AWS data transfer pricing? | AWS bandwidth pricing. https://www.cloudflare.com/learning/cloud/what-is-aws-data-transfer-pricing/</p>
+                <p>CloudExpat. (2025, septiembre 6). Cloud Storage Deep Dive (Part 2): Performance .... https://www.cloudexpat.com/blog/enterprise-cloud-storage-deep-dive-p2/</p>
+                <p>CloudSee Drive. (2025, septiembre 6). The History of Amazon S3. https://www.cloudseedrive.com/history-of-amazon-s3/</p>
+                <p>CloudZero. (2025, septiembre 6). A 2025 Guide To Amazon S3 Pricing. https://www.cloudzero.com/blog/s3-pricing/</p>
+                <p>CloudZero. (2025, septiembre 6). Azure Blob Storage Pricing: A 2025 Cost Breakdown. https://www.cloudzero.com/blog/azure-blob-storage-pricing/</p>
+                <p>Codementor. (2025, septiembre 6). AWS S3 Consistency Model. https://www.codementor.io/@vsudharani/aws-s3-consistency-model-18byj02b4c/</p>
+                <p>ChaosSearch. (2025, septiembre 6). Leveraging Amazon S3 Cloud Object Storage for Analytics. https://www.chaossearch.io/blog/amazon-aws-s3-object-storage-analytics</p>
+                <p>Check Point Software. (2025, septiembre 6). Top 3 S3 Bucket Security Issues. https://www.checkpoint.com/cyber-hub/cloud-security/what-is-aws-security/s3-bucket-security/top-3-s3-bucket-security-issues/</p>
+                <p>Cloud Security Alliance. (2025, septiembre 6). Securing AWS S3 Buckets: Risks and Best Practices. https://cloudsecurityalliance.org/blog/2024/06/10/aws-s3-bucket-security-the-top-cspm-practices</p>
+                <p>DataCore. (2025, septiembre 6). How Object Storage Helped Establish the Cloud. https://www.datacore.com/blog/object-storage-helped-establish-cloud/</p>
+                <p>DEV Community. (2025, septiembre 6). "Exploring Cloud Storage Services: An In-Depth Look at AWS S3, Google Cloud Storage, and Azure Blob.". https://dev.to/blessedofofon2/exploring-cloud-storage-services-an-in-depth-look-at-aws-s3-google-cloud-storage-and-azure-blob-4jhj</p>
+                <p>Economize Cloud. (2025, septiembre 6). Amazon S3 vs Google Cloud Storage vs Azure Storage Cost. https://www.economize.cloud/blog/amazon-s3-vs-google-storage-vs-azure-storage/</p>
+                <p>Educative.io. (2025, septiembre 6). Advantages of Using S3. https://www.educative.io/courses/detailed-workings-aws-s3/advantages-of-using-s3</p>
+                <p>Edge Delta. (2025, septiembre 6). A Practical Guide on How To Analyze Data in S3 using Amazon Athena. https://edgedelta.com/company/knowledge-center/how-to-analyze-data-in-s3-using-amazon-athena</p>
+                <p>Fivetran. (2025, septiembre 6). S3 Data Lakes: The Ultimate Guide. https://www.fivetran.com/learn/s3-data-lakes-the-ultimate-guide</p>
+                <p>GeeksforGeeks. (2025, septiembre 6). How Amazon S3 Achieves 99.999999999% Durability?. https://www.geeksforgeeks.org/system-design/how-amazon-s3-achieves-99-999999999-durability/</p>
+                <p>GeeksforGeeks. (2025, septiembre 6). AWS S3 Pricing. https://www.geeksforgeeks.org/cloud-computing/aws-s3-pricing/</p>
+                <p>GeeksforGeeks. (2025, septiembre 6). 5 Common Mistakes to Avoid When Using AWS S3. https://www.geeksforgeeks.org/blogs/common-mistakes-to-avoid-when-using-aws-s3/</p>
+                <p>Goll, P. (2025, septiembre 6). Exploring S3 Request Pricing: Do Nonexistent Resources Cost You?. Medium. https://medium.com/@paulgoll/exploring-s3-request-pricing-do-nonexistent-resources-cost-you-e46094c5aa61</p>
+                <p>hidekazu-konishi. (2025, septiembre 6). AWS History and Timeline regarding Amazon S3 - Focusing on the evolution of features, roles, and prices beyond mere storage. https://hidekazu-konishi.com/entry/aws_history_and_timeline_amazon_s3.html</p>
+                <p>Integrate.io. (2025, septiembre 6). Top 5 Amazon S3 ETL Tools for 2025. https://www.integrate.io/blog/amazon-s3-etl-tools/</p>
+                <p>Lekariya, N. (2025, septiembre 6). “The Hidden Pitfalls of AWS S3 for Interview: What They Don't Tell You About the Cloud's Favorite Bucket”. Medium. https://medium.com/@niketl16/the-hidden-pitfalls-of-aws-s3-ofr-interview-what-they-dont-tell-you-about-the-cloud-s-favorite-9a722ab4edbe</p>
+                <p>Microsoft. (2025, septiembre 6). Compare Storage Services on Azure and AWS. Microsoft Learn. https://learn.microsoft.com/en-us/azure/architecture/aws-professional/storage</p>
+                <p>Miro. (2025, septiembre 6). What Is S3 in AWS and How Does It Work?. https://miro.com/diagramming/what-is-s3-aws/</p>
+                <p>Mudadla, S. (2025, septiembre 6). Amazon S3 bucket creation limitations. Medium. https://medium.com/@sujathamudadla1213/amazon-s3-bucket-creation-limitations-973d806a899f</p>
+                <p>Pluralsight. (2025, septiembre 6). Amazon Athena, Explained: What is it, and When Should I Use it?. https://www.pluralsight.com/resources/blog/cloud/amazon-athena-explained-what-is-it-and-when-should-i-use-it</p>
+                <p>ProPrivacy.com. (2025, septiembre 6). 5 Best Amazon S3 User Interface Tools in 2025. https://proprivacy.com/cloud/comparison/amazon-s3-user-interface-tools</p>
+                <p>Servifyspheresolutions. (2025, septiembre 6). An Insightful Guide to AWS S3 Buckets and Objects. Medium. https://medium.com/@servifyspheresolutions/an-insightful-guide-to-aws-s3-buckets-and-objects-0aaf33d98aac</p>
+                <p>simplyblock. (2025, septiembre 6). 9 Best Open Source Tools for Amazon S3. https://www.simplyblock.io/blog/open-source-tools-for-amazon-s3/</p>
+                <p>Stitch Data. (2025, septiembre 6). What is AWS S3? Powerful Features with Minimal Complexity. https://www.stitchdata.com/resources/aws-s3/</p>
+                <p>Stratus10. (2025, septiembre 6). No Servers Needed: Host a Static Website with Amazon S3 and CloudFront. https://stratus10.com/blog/how-to-host-a-static-website-with-s3-and-cloudfront</p>
+                <p>Sujatha Mudadla. (2025, septiembre 6). Amazon S3 bucket creation limitations. Medium. https://medium.com/@sujathamudadla1213/amazon-s3-bucket-creation-limitations-973d806a899f</p>
+                <p>Sumo Logic. (2025, septiembre 6). Learn about AWS s3 | trusted object-level storage solution. https://www.sumologic.com/blog/what-is-aws-s3</p>
+                <p>Tutorialspoint. (2025, septiembre 6). Using Lambda Function with Amazon S3. https://www.tutorialspoint.com/aws_lambda/aws_lambda_using_lambda_function_with_amazon_s3.htm</p>
+                <p>Wikimedia Foundation. (2025, septiembre 6). Amazon S3. Wikipedia. https://en.wikipedia.org/wiki/Amazon_S3</p>
+                <p>aalam-info-solutions-llp. (2025, septiembre 6). How to Integrate AWS Lambda and S3 Bucket. Medium. https://medium.com/@aalam-info-solutions-llp/how-to-integrate-aws-lambda-and-s3-bucket-883574692eaa</p>
+                <p>arlene.r. (2025, septiembre 6). Introduction to AWS Glue for ETL : Data Pipeline from S3/MySQL to AWS Redshift. Medium. https://medium.com/@arlene.r/introduction-to-aws-glue-for-etl-data-pipeline-from-s3-mysql-to-aws-redshift-aad0c89edc26</p>
+            </div>
+        </footer>
 </html>
