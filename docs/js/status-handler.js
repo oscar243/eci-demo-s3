@@ -3,9 +3,18 @@
  * Realiza polling para monitorear el progreso y obtener resultados
  */
 
+// ========================================
+// CONFIGURACIÓN DEL API - EDITAR AQUÍ
+// ========================================
+const API_CONFIG = {
+    // URL base del API Gateway para consultar estado
+    STATUS_API_URL: 'https://wdinnh5fgb.execute-api.us-east-1.amazonaws.com/v1/status'
+};
+// ========================================
+
 class StatusHandler {
     constructor() {
-        this.apiBaseUrl = 'https://wdinnh5fgb.execute-api.us-east-1.amazonaws.com/v1/status';
+        this.apiBaseUrl = API_CONFIG.STATUS_API_URL;
         this.pollingInterval = 3000; // 3 segundos
         this.maxPollingTime = 300000; // 5 minutos máximo
         this.maxConsecutiveErrors = 5; // Máximo 5 errores consecutivos

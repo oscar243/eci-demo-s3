@@ -3,9 +3,18 @@
  * Maneja la comunicación con API Gateway y la subida directa a S3
  */
 
+// ========================================
+// CONFIGURACIÓN DEL API - EDITAR AQUÍ
+// ========================================
+const API_CONFIG = {
+    // URL del API Gateway para generar URLs de subida
+    UPLOAD_API_URL: 'https://wdinnh5fgb.execute-api.us-east-1.amazonaws.com/v1/generate-upload-url'
+};
+// ========================================
+
 class UploadHandler {
     constructor() {
-        this.apiUrl = 'https://wdinnh5fgb.execute-api.us-east-1.amazonaws.com/v1/generate-upload-url';
+        this.apiUrl = API_CONFIG.UPLOAD_API_URL;
         this.maxFileSize = 20 * 1024 * 1024; // 20MB
         this.allowedTypes = [
             'audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/vnd.wave',

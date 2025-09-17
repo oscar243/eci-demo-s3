@@ -1,14 +1,18 @@
-# eci-demo-s3
+# Demo S3 Lambda - Procesamiento de Audio
 
-Contexto aplicacion:
+## Configuración del API
 
-Se crea un frontend estatico que se usara para suir archivos a s3
+### URLs a cambiar:
+- **Subida:** `docs/js/upload-handler.js` → buscar `UPLOAD_API_URL`
+- **Estado:** `docs/js/status-handler.js` → buscar `STATUS_API_URL`
 
-El proceso de subida es:
+Cada archivo tiene una sección marcada con `// CONFIGURACIÓN DEL API - EDITAR AQUÍ`
 
-Solicitar a api gateway link estatico, el api gateway usa un lambda para generar el link par ahacer la subida, se sube el archivo
+### Ejemplo:
+```javascript
+const API_CONFIG = {
+    UPLOAD_API_URL: 'https://API-ID.execute-api.REGION.amazonaws.com/v1/endpoint'
+};
+```
 
-Hay una funcion lambda que hace la conversion del audio subido a texto y lo pasa por un llm, el audio dee ser de menos de 20 megas. Los resultados se guardan en s3.
-
-
-Ajustar el cors del api
+⚠️ **Nota:** APIs y Lambdas eliminadas por costos.
